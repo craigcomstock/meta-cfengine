@@ -12,6 +12,7 @@ HOMEPAGE = "https://cfengine.com"
 LICENSE = "CLOSED"
 LICENSE_FLAGS = "commercial"
 
+# Contact sales at https://cfengine.com/contact/ to receive an enterprise tarball for your MACHINE
 SRC_URI = "file:///tmp/cfengine-enterprise-3.21.0.tar.gz"
 
 export EXPLICIT_VERSION="${PV}"
