@@ -25,16 +25,18 @@ SRC_URI = "https://cfengine-package-repos.s3.amazonaws.com/tarballs/${BP}.tar.gz
 #SRC_URI[md5sum] = "5df2f85c75efc351ffadebcc11046a98"
 SRC_URI[sha256sum] = "013ebe68599915cedb4bf753b471713d91901a991623358b9a967d9a779bcc16"
 
-inherit autotools
+inherit autotools-brokensep
 
 export EXPLICIT_VERSION="${PV}"
 
-EXTRA_OECONF = "--prefix=${datadir}/cfengine"
+# The default of /var/cfengine is preferred and best supported
+CFE_WORKDIR = "/var/cfengine"
+EXTRA_OECONF += "--prefix=${CFE_WORKDIR}"
 
 do_install:append() {
     rm -rf ${D}${datadir}/cfengine/modules/packages/zypper ${D}${datadir}/cfengine/modules/packages/yum
 }
 
-FILES:${PN} = "${datadir}/cfengine"
+FILES:${PN} = "${CFE_WORKDIR}"
 
 RDEPENDS:${PN} += "python3-core"

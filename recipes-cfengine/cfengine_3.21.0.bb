@@ -50,6 +50,11 @@ PACKAGECONFIG[libcurl] = "--with-libcurl,--without-libcurl,curl,"
 
 EXTRA_OECONF = "hw_cv_func_va_copy=yes --with-init-script=${sysconfdir}/init.d --with-tokyocabinet"
 
+# The default of /var/cfengine is preferred and best supported
+CFE_WORKDIR = "/var/cfengine"
+EXTRA_OECONF += "--prefix=${CFE_WORKDIR} --with-workdir=${CFE_WORKDIR}"
+
+# distribution tarballs come pre-autoconf'd to an older libtool version, so need to reconfigure
 do_configure:prepend() {
     autoreconf -i
 }
@@ -73,6 +78,7 @@ EOF
         sed -i -e 's#/etc/init.d#${datadir}/${BPN}#' ${D}${systemd_system_unitdir}/*.service
     fi
     rm -rf ${D}${datadir}/cfengine/modules/packages/zypper
+    find ${D} -name remake_outputs.pl | xargs rm
 }
 
 RDEPENDS:${PN} += "${BPN}-masterfiles"
